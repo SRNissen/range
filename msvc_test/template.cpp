@@ -1,15 +1,16 @@
-#include "pch.h"
 #include "CppUnitTest.h"
+
+#include "snrt_ranges.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace msvctest
+namespace test_namespace
 {
-	TEST_CLASS(msvctest)
+	TEST_CLASS(test_class)
 	{
 	public:
 		
-		TEST_METHOD(TestMethod1)
+		TEST_METHOD(test_method)
 		{
 		}
 	};
