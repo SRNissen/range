@@ -15,7 +15,7 @@ namespace snrt
         bool is_within_range(auto const& range) { return range.contains(value); }
         bool is_below_range(auto const& range) { return location_in_range(range) == Location::below_range; }
         bool is_above_range(auto const& range) { return location_in_range(range) == Location::above_range; }
-        Location location_in_range(auto const& range) { return range.locate(value); }
+        Location locate_compared_to_range(auto const& range) { return range.locate(value); }
     };
 }
 
