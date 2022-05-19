@@ -11,11 +11,16 @@ namespace snrt
     class Value
     {
     public:
+
         T value;
-        bool is_within_range(auto const& range) { return range.contains(value); }
-        bool is_below_range(auto const& range) { return location_in_range(range) == Location::below_range; }
-        bool is_above_range(auto const& range) { return location_in_range(range) == Location::above_range; }
-        Location locate_compared_to_range(auto const& range) { return range.locate(value); }
+        [[nodiscard]] constexpr operator T const& () const { return Value; }
+        [[nodiscard]] constexpr operator T & () { return Value; }
+
+        [[nodiscard]] constexpr bool is_in_range(auto const& range) const { return range.contains(value); }
+        [[nodiscard]] constexpr bool is_below_range(auto const& range) const { return locate_compared_to_range(range) == Location::below_range; }
+        [[nodiscard]] constexpr bool is_above_range(auto const& range) const { return locate_compared_to_range(range) == Location::above_range; }
+        
+        [[nodiscard]] constexpr Location locate_compared_to_range(auto const& range) const { return range.locate(value); }
     };
 }
 

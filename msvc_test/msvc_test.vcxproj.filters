@@ -18,7 +18,7 @@
     <ClCompile Include="template.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="typical_use.cpp">
+    <ClCompile Include="typical_uses.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

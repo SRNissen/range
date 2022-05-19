@@ -1,7 +1,5 @@
 #include "CppUnitTest.h"
 
-#include "snrt_ranges.hpp"
-
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace test_namespace
