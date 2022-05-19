@@ -17,9 +17,9 @@ namespace snrt
 
 		Range(LowerBound<T>, UpperBound<T>);
 
-		bool contains(T const& value);
+		[[nodiscard]] constexpr bool contains(T const& value) const;
 
-		Location locate(T const& value);
+		[[nodiscard]] constexpr Location locate(T const& value) const;
 
 	private:
 		LowerBound<T> lower_bound;
@@ -37,13 +37,13 @@ namespace snrt
 	}
 
 	template<typename T, template<typename> class LowerBound, template<typename> class UpperBound>
-	bool Range<T, LowerBound, UpperBound>::contains(T const& value)
+	[[nodiscard]] constexpr bool Range<T, LowerBound, UpperBound>::contains(T const& value) const
 	{
 		return lower_bound.is_satisfied(value) && upper_bound.is_satisfied(value);
 	}
 
 	template<typename T, template<typename> class LowerBound, template<typename> class UpperBound>
-	Location Range<T, LowerBound, UpperBound>::locate(T const& value)
+	[[nodiscard]] constexpr Location Range<T, LowerBound, UpperBound>::locate(T const& value) const
 	{
 		if (!lower_bound.is_satisfied(value))
 			return Location::below_range;

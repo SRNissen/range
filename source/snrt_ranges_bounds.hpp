@@ -1,13 +1,13 @@
 #ifndef SNRT_RANGES_BOUNDS_HPP
 #define SNRT_RANGES_BOUNDS_HPP
 
-namespace snrt::bounds
+namespace snrt
 {
     template<typename T>
     class Minimum
     {
     public:
-        bool is_satisfied(T const& t) { return t >= value; }
+        [[nodiscard]] constexpr bool is_satisfied(T const& t) const { return t >= value; }
 
         T value;
 
@@ -18,7 +18,7 @@ namespace snrt::bounds
     class GreaterThan
     {
     public:
-        bool is_satisfied(T const& t) { return t > value; }
+        [[nodiscard]] constexpr bool is_satisfied(T const& t) const { return t > value; }
 
         T value;
 
@@ -29,7 +29,7 @@ namespace snrt::bounds
     class Maximum
     {
     public:
-        bool is_satisfied(T const& t) { return t <= value; }
+        [[nodiscard]] constexpr bool is_satisfied(T const& t) const { return t <= value; }
 
         T value;
 
@@ -40,7 +40,7 @@ namespace snrt::bounds
     class LessThan
     {
     public:
-        bool is_satisfied(T const& t) { return t < value; }
+        [[nodiscard]] constexpr bool is_satisfied(T const& t) const { return t < value; }
         
         T value;
         
