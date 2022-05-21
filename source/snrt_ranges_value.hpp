@@ -13,8 +13,8 @@ namespace snrt
     public:
 
         T value;
-        [[nodiscard]] constexpr operator T const& () const { return Value; }
-        [[nodiscard]] constexpr operator T & () { return Value; }
+        [[nodiscard]] constexpr operator T const& () const { return value; }
+        [[nodiscard]] constexpr operator T & () { return value; }
 
         [[nodiscard]] constexpr bool is_in_range(auto const& range) const { return range.contains(value); }
         [[nodiscard]] constexpr bool is_below_range(auto const& range) const { return locate_compared_to_range(range) == Location::below_range; }
