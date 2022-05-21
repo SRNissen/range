@@ -21,5 +21,8 @@
     <ClCompile Include="typical_uses.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="bounds.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
