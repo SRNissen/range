@@ -36,6 +36,7 @@ namespace typical_use_A
 
 			Assert::IsFalse(int_range.contains(199));
 
+			Assert::IsTrue(int_range.contains(200));
 			Assert::IsTrue(int_range.contains(201));
 			Assert::IsTrue(int_range.contains(202));
 			Assert::IsTrue(int_range.contains(203));
@@ -63,16 +64,16 @@ namespace typical_use_A
 
 		TEST_METHOD(exclusive_exclusive)
 		{
-			auto const lower_bound = snrt::GreaterThan{ std::string{"Jules"} };
-			auto const upper_bound = snrt::LessThan{ std::string{"Mike"} };
+			auto const lower_bound = snrt::ExclusiveMin<std::string>{ "CX-204" };
+			auto const upper_bound = snrt::ExclusiveMax<std::string>{ "FF-290" };
 
 			auto const string_range = snrt::Range{ lower_bound, upper_bound };
 
-			Assert::IsFalse(string_range.contains("Jules"));
+			Assert::IsFalse(string_range.contains("CX-204"));
 
-			Assert::IsTrue(string_range.contains("Kim"));
+			Assert::IsTrue(string_range.contains("DT-809"));
 
-			Assert::IsFalse(string_range.contains("Mike"));
+			Assert::IsFalse(string_range.contains("FF-290"));
 		}
 	};
 }

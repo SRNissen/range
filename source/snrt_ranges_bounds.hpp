@@ -47,6 +47,18 @@ namespace snrt
         const static bool is_upper_bound = true;
     };
 
+    template<typename T>
+    using InclusiveMin = Minimum<T>;
+
+    template<typename T>
+    using ExclusiveMin = GreaterThan<T>;
+
+    template<typename T>
+    using InclusiveMax = Maximum<T>;
+
+    template<typename T>
+    using ExclusiveMax = LessThan<T>;
+
 } //namespace
 
 #endif //header guard
