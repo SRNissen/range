@@ -35,7 +35,7 @@ int main()
         assert(*cbegin == 200);
     }
     
-        {
+    {
         auto const lower_bound = snrt::GreaterThan{200};
         auto const upper_bound = snrt::LessThan{204};
         auto const int_range = snrt::Range{lower_bound, upper_bound};
