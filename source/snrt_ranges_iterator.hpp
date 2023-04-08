@@ -13,7 +13,7 @@ namespace snrt
 		backward
 	};
 
-	template <typename T, Direction D>
+	template <std::integral T, Direction D>
 	struct RangeIterator
 	{
 		using difference_type = std::ptrdiff_t;
@@ -21,8 +21,6 @@ namespace snrt
 		using pointer = T *;
 		using reference = T &;
 		using iterator_category = std::random_access_iterator_tag;
-
-		static_assert(std::is_integral_v<T>);
 
 		RangeIterator(T initial_value) : t{initial_value} {}
 
