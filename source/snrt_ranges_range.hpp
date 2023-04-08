@@ -10,7 +10,6 @@
 namespace snrt
 {
 
-
 	template <typename T, template <typename> class LowerBound, template <typename> class UpperBound>
 	class Range
 	{
@@ -23,105 +22,99 @@ namespace snrt
 
 		[[nodiscard]] constexpr Location locate(T const &value) const;
 
-		constexpr RangeIterator<T, Direction::forward> cbegin() const
+		constexpr RangeIterator<T> cbegin() const
 		{
-			if constexpr (std::is_same_v<decltype(lower_bound), Minimum<T>>)
+			if constexpr (std::is_same_v<decltype(lower_bound_), Minimum<T>>)
 			{
-				return {lower_bound.value};
+				return {lower_bound_.value};
 			}
-			else if constexpr (std::is_same_v<decltype(lower_bound), GreaterThan<T>>)
+			else if constexpr (std::is_same_v<decltype(lower_bound_), GreaterThan<T>>)
 			{
-				return {lower_bound.value + 1};
+				return {lower_bound_.value + 1};
 			}
 		}
 
-		constexpr RangeIterator<T, Direction::forward> begin() const
+		constexpr RangeIterator<T> begin() const
 		{
 			return cbegin();
 		}
 
-		constexpr RangeIterator<T, Direction::forward> cend() const
+		constexpr RangeIterator<T> cend() const
 		{
-			if constexpr (std::is_same_v<decltype(upper_bound), LessThan<T>>)
+			if constexpr (std::is_same_v<decltype(upper_bound_), LessThan<T>>)
 			{
-				return {upper_bound.value};
+				return {upper_bound_.value};
 			}
-			else if (std::is_same_v<decltype(upper_bound), Maximum<T>>)
+			else if (std::is_same_v<decltype(upper_bound_), Maximum<T>>)
 			{
-				return {upper_bound.value + 1};
+				return {upper_bound_.value + 1};
 			}
 		}
 
-		constexpr RangeIterator<T, Direction::forward> end() const
+		constexpr RangeIterator<T> end() const
 		{
 			return cend();
 		}
 
-		constexpr RangeIterator<T, Direction::backward> crbegin() const
+		constexpr auto crbegin() const
 		{
-			if constexpr (std::is_same_v<decltype(upper_bound), LessThan<T>>)
-			{
-				return {upper_bound.value - 1};
-			}
-			else if (std::is_same_v<decltype(upper_bound), Maximum<T>>)
-			{
-				return {upper_bound.value};
-			}
+			return std::reverse_iterator{cend()};
 		}
 
-		constexpr RangeIterator<T, Direction::backward> rbegin() const
+		constexpr auto rbegin() const
 		{
 			return crbegin();
 		}
 
-		constexpr RangeIterator<T, Direction::backward> crend() const
+		constexpr auto crend() const
 		{
-			if constexpr (std::is_same_v<decltype(lower_bound), Minimum<T>>)
-			{
-				return {lower_bound.value - 1};
-			}
-			else if constexpr (std::is_same_v<decltype(lower_bound), GreaterThan<T>>)
-			{
-				return {lower_bound.value};
-			}
+			return std::reverse_iterator{cbegin()};
 		}
 
-		constexpr RangeIterator<T, Direction::backward> rend() const
+		constexpr auto rend() const
 		{
 			return crend();
 		}
 
-		constexpr T back() const;
-		constexpr T front() const;
+		constexpr T back() const
+		{
+			return *crbegin();
+		}
+		
+		constexpr T front() const
+		{
+			return *begin();
+		}
+		
 
 	private:
-		LowerBound<T> lower_bound;
-		UpperBound<T> upper_bound;
+		LowerBound<T> lower_bound_;
+		UpperBound<T> upper_bound_;
 	};
 
 	template <typename T, template <typename> class LowerBound, template <typename> class UpperBound>
-	Range<T, LowerBound, UpperBound>::Range(LowerBound<T> lb, UpperBound<T> ub) : lower_bound(lb), upper_bound(ub)
+	Range<T, LowerBound, UpperBound>::Range(LowerBound<T> lb, UpperBound<T> ub) : lower_bound_(lb), upper_bound_(ub)
 	{
 		static_assert(LowerBound<T>::is_lower_bound == true);
 		static_assert(UpperBound<T>::is_upper_bound == true);
 
-		if (upper_bound.value < lower_bound.value)
+		if (upper_bound_.value < lower_bound_.value)
 			throw snrt::exception::InvertedRange{};
 	}
 
 	template <typename T, template <typename> class LowerBound, template <typename> class UpperBound>
 	[[nodiscard]] constexpr bool Range<T, LowerBound, UpperBound>::contains(T const &value) const
 	{
-		return lower_bound.is_satisfied(value) && upper_bound.is_satisfied(value);
+		return lower_bound_.is_satisfied(value) && upper_bound_.is_satisfied(value);
 	}
 
 	template <typename T, template <typename> class LowerBound, template <typename> class UpperBound>
 	[[nodiscard]] constexpr Location Range<T, LowerBound, UpperBound>::locate(T const &value) const
 	{
-		if (!lower_bound.is_satisfied(value))
+		if (!lower_bound_.is_satisfied(value))
 			return Location::below_range;
 
-		else if (!upper_bound.is_satisfied(value))
+		else if (!upper_bound_.is_satisfied(value))
 			return Location::above_range;
 
 		else
