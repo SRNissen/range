@@ -5,8 +5,9 @@
 #include <iterator>
 #include <type_traits>
 
-namespace snrt{
-    	enum class Direction
+namespace snrt
+{
+	enum class Direction
 	{
 		forward,
 		backward
@@ -17,10 +18,10 @@ namespace snrt{
 	{
 		using difference_type = std::ptrdiff_t;
 		using value_type = std::remove_cv_t<T>;
-		using pointer = T*;
-		using reference = T&;
+		using pointer = T *;
+		using reference = T &;
 		using iterator_category = std::random_access_iterator_tag;
-		
+
 		static_assert(std::is_integral_v<T>);
 
 		RangeIterator(T initial_value) : t{initial_value} {}
@@ -30,12 +31,9 @@ namespace snrt{
 			return t;
 		}
 
-		template <typename I>
-		constexpr RangeIterator& operator+=(I i)
+		constexpr RangeIterator &operator+=(std::integral auto i)
 		{
-			static_assert(std::is_integral_v<I>);
-			
-			if constexpr(D == Direction::forward)
+			if constexpr (D == Direction::forward)
 				t += i;
 			else
 				t -= i;
@@ -43,21 +41,15 @@ namespace snrt{
 			return *this;
 		}
 
-		template <typename I>
-		constexpr RangeIterator operator+(I i) const
+		constexpr RangeIterator operator+(std::integral auto i) const
 		{
-			static_assert(std::is_integral_v<I>);
-			
 			RangeIterator temp(*this);
 
 			return temp += i;
 		}
-		
-		template <typename I>
-		constexpr RangeIterator& operator-=(I i)
+
+		constexpr RangeIterator &operator-=(std::integral auto i)
 		{
-			static_assert(std::is_integral_v<I>);
-			
 			if constexpr (D == Direction::forward)
 				t -= i;
 			else
@@ -66,11 +58,9 @@ namespace snrt{
 			return *this;
 		}
 
-		template <typename I>
-		constexpr RangeIterator operator-(I i) const
+		constexpr RangeIterator operator-(std::integral auto i) const
 		{
-			static_assert(std::is_integral_v<I>);
-			
+
 			RangeIterator temp(*this);
 
 			return temp -= i;
@@ -79,7 +69,7 @@ namespace snrt{
 		constexpr RangeIterator operator++(int)
 		{
 			RangeIterator temp = *this;
-			
+
 			if constexpr (D == Direction::forward)
 				t += 1;
 			else
@@ -88,7 +78,7 @@ namespace snrt{
 			return temp;
 		}
 
-		constexpr RangeIterator& operator++()
+		constexpr RangeIterator &operator++()
 		{
 			if constexpr (D == Direction::forward)
 				t += 1;
@@ -101,7 +91,7 @@ namespace snrt{
 		constexpr RangeIterator operator--(int)
 		{
 			RangeIterator temp = *this;
-			
+
 			if constexpr (D == Direction::forward)
 				t -= 1;
 			else
@@ -110,7 +100,7 @@ namespace snrt{
 			return temp;
 		}
 
-		constexpr RangeIterator& operator--()
+		constexpr RangeIterator &operator--()
 		{
 			if constexpr (D == Direction::forward)
 				t -= 1;
