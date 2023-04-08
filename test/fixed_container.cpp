@@ -152,4 +152,11 @@ void test()
 
         assert(a == 1 + 2 + 3 + 4);
     }
+    
+    // Back and front
+    {
+        auto const range = snrt::Range{snrt::Minimum{1}, snrt::Maximum{4}};
+        assert(range.front() == 1);
+        assert(range.back() == 4);
+    }
 }

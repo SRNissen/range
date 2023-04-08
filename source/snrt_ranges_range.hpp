@@ -18,74 +18,26 @@ namespace snrt
 
 		Range(LowerBound<T>, UpperBound<T>);
 
-		[[nodiscard]] constexpr bool contains(T const &value) const;
+		[[nodiscard]] constexpr auto contains(T const &value) const -> bool;
+		[[nodiscard]] constexpr auto locate(T const &value) const -> Location;
 
-		[[nodiscard]] constexpr Location locate(T const &value) const;
 
-		constexpr RangeIterator<T> cbegin() const
-		{
-			if constexpr (std::is_same_v<decltype(lower_bound_), Minimum<T>>)
-			{
-				return {lower_bound_.value};
-			}
-			else if constexpr (std::is_same_v<decltype(lower_bound_), GreaterThan<T>>)
-			{
-				return {lower_bound_.value + 1};
-			}
-		}
 
-		constexpr RangeIterator<T> begin() const
-		{
-			return cbegin();
-		}
+		// Element access functions only available when static_assert(std::is_integral_v<T> == true);
+		[[nodiscard]] constexpr auto front() const -> T;
+		[[nodiscard]] constexpr auto back() const -> T;
 
-		constexpr RangeIterator<T> cend() const
-		{
-			if constexpr (std::is_same_v<decltype(upper_bound_), LessThan<T>>)
-			{
-				return {upper_bound_.value};
-			}
-			else if (std::is_same_v<decltype(upper_bound_), Maximum<T>>)
-			{
-				return {upper_bound_.value + 1};
-			}
-		}
+		[[nodiscard]] constexpr auto cbegin() const -> RangeIterator<T>;
+		[[nodiscard]] constexpr auto cend() const -> RangeIterator<T>;
 
-		constexpr RangeIterator<T> end() const
-		{
-			return cend();
-		}
+		[[nodiscard]] constexpr auto begin() const -> RangeIterator<T>;
+		[[nodiscard]] constexpr auto end() const -> RangeIterator<T>;
 
-		constexpr auto crbegin() const
-		{
-			return std::reverse_iterator{cend()};
-		}
+		[[nodiscard]] constexpr auto crbegin() const -> std::reverse_iterator<RangeIterator<T>>;
+		[[nodiscard]] constexpr auto crend() const -> std::reverse_iterator<RangeIterator<T>>;
 
-		constexpr auto rbegin() const
-		{
-			return crbegin();
-		}
-
-		constexpr auto crend() const
-		{
-			return std::reverse_iterator{cbegin()};
-		}
-
-		constexpr auto rend() const
-		{
-			return crend();
-		}
-
-		constexpr T back() const
-		{
-			return *crbegin();
-		}
-		
-		constexpr T front() const
-		{
-			return *begin();
-		}
-		
+		[[nodiscard]] constexpr auto rbegin() const -> std::reverse_iterator<RangeIterator<T>>;
+		[[nodiscard]] constexpr auto rend() const -> std::reverse_iterator<RangeIterator<T>>;
 
 	private:
 		LowerBound<T> lower_bound_;
@@ -119,6 +71,81 @@ namespace snrt
 
 		else
 			return Location::in_range;
+	}
+
+	template <typename T, template <typename> class LowerBound, template <typename> class UpperBound>
+	[[nodiscard]] constexpr RangeIterator<T> Range<T, LowerBound, UpperBound>::cbegin() const
+	{
+		if constexpr (std::is_same_v<decltype(lower_bound_), Minimum<T>>)
+		{
+			return {lower_bound_.value};
+		}
+		else if constexpr (std::is_same_v<decltype(lower_bound_), GreaterThan<T>>)
+		{
+			return {lower_bound_.value + 1};
+		}
+	}
+
+	template <typename T, template <typename> class LowerBound, template <typename> class UpperBound>
+	[[nodiscard]] constexpr RangeIterator<T> Range<T, LowerBound, UpperBound>::cend() const
+	{
+		if constexpr (std::is_same_v<decltype(upper_bound_), LessThan<T>>)
+		{
+			return {upper_bound_.value};
+		}
+		else if (std::is_same_v<decltype(upper_bound_), Maximum<T>>)
+		{
+			return {upper_bound_.value + 1};
+		}
+	}
+
+	template <typename T, template <typename> class LowerBound, template <typename> class UpperBound>
+	[[nodiscard]] constexpr RangeIterator<T> Range<T, LowerBound, UpperBound>::begin() const
+	{
+		return cbegin();
+	}
+
+	template <typename T, template <typename> class LowerBound, template <typename> class UpperBound>
+	[[nodiscard]] constexpr RangeIterator<T> Range<T, LowerBound, UpperBound>::end() const
+	{
+		return cend();
+	}
+
+	template <typename T, template <typename> class LowerBound, template <typename> class UpperBound>
+	[[nodiscard]] constexpr std::reverse_iterator<RangeIterator<T>> Range<T, LowerBound, UpperBound>::crbegin() const
+	{
+		return std::reverse_iterator{cend()};
+	}
+
+	template <typename T, template <typename> class LowerBound, template <typename> class UpperBound>
+	[[nodiscard]] constexpr std::reverse_iterator<RangeIterator<T>> Range<T, LowerBound, UpperBound>::crend() const
+	{
+		return std::reverse_iterator{cbegin()};
+	}
+
+	template <typename T, template <typename> class LowerBound, template <typename> class UpperBound>
+	[[nodiscard]] constexpr std::reverse_iterator<RangeIterator<T>> Range<T, LowerBound, UpperBound>::rbegin() const
+	{
+		return crbegin();
+	}
+
+	template <typename T, template <typename> class LowerBound, template <typename> class UpperBound>
+	[[nodiscard]] constexpr std::reverse_iterator<RangeIterator<T>> Range<T, LowerBound, UpperBound>::rend() const
+	{
+		return crend();
+	}
+
+	template <typename T, template <typename> class LowerBound, template <typename> class UpperBound>
+	[[nodiscard]] constexpr T Range<T, LowerBound, UpperBound>::front() const
+	{
+		
+		return *begin();
+	}
+
+	template <typename T, template <typename> class LowerBound, template <typename> class UpperBound>
+	[[nodiscard]] constexpr T Range<T, LowerBound, UpperBound>::back() const
+	{
+		return *rbegin();
 	}
 
 } // namespace
