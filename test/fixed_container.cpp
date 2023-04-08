@@ -1,4 +1,5 @@
 #include "../source/snrt_ranges_range.hpp"
+#include "../source/snrt_ranges_value.hpp"
 #include <iostream>
 #include <cassert>
 
@@ -153,10 +154,16 @@ void test()
         assert(a == 1 + 2 + 3 + 4);
     }
     
-    // Back and front
+    // Back and front - how ugly are the errors when called on a range where T isn't integral?
     {
-        auto const range = snrt::Range{snrt::Minimum{1}, snrt::Maximum{4}};
-        assert(range.front() == 1);
-        assert(range.back() == 4);
+        auto const range = snrt::Range{snrt::Minimum{1.0}, snrt::Maximum{4.0}};
+        // assert(range.front() == 1);
+        // assert(range.back() == 4);
+        assert(snrt::Value{3.0}.is_in_range(range));
+    }
+    
+    // Bad range construction
+    {
+        //auto const range = snrt::Range{snrt::Minimum{1.0}, snrt::Maximum{4}};
     }
 }

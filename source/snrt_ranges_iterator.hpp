@@ -7,7 +7,7 @@
 
 namespace snrt
 {
-	template <std::integral T>
+	template <typename T>
 	struct RangeIterator
 	{
 		using difference_type = std::ptrdiff_t;
@@ -95,13 +95,30 @@ namespace snrt
 
 		constexpr bool operator>(RangeIterator other) const
 		{
-				return t > other.t;
+			return t > other.t;
 		}
 
 		constexpr bool operator>=(RangeIterator other) const
 		{
 			return (*this > other) || (*this == other);
 		}
+
+		static_assert(std::is_integral_v<T>,
+					  "\n"
+					  "\n###################################"
+					  "\n# If you are seeing this compiler #"
+					  "\n# error, you tried to call one of #"
+					  "\n#                                 #"
+					  "\n# - front,                        #"
+					  "\n# - back,                         #"
+					  "\n# - begin, (or c- or r-begin)     #"
+					  "\n# - end,   (or c- or r-end)       #"
+					  "\n#                                 #"
+					  "\n# on an snrt::Range<T,L,U> where  #"
+					  "\n# T was not an integral type.     #"
+					  "\n# Unfortunately, those calls      #"
+					  "\n# only work when T is integral    #"
+					  "\n###################################");
 
 	private:
 		T t;
