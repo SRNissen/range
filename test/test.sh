@@ -1,7 +1,17 @@
-echo cleaning old asserts
-rm asserts
-echo compiling asserts
-g++ fixed_container.cpp -std=c++20 -Wall -Wextra -Wpedantic -Werror -o asserts
-echo running asserts
-./asserts
-echo test done
+echo
+
+echo iterator test init
+    rm bin/iterator
+    g++ -o ./bin/iterator iterator.cpp -std=c++20 -Wall -Wextra -Wpedantic -Werror
+    ./bin/iterator
+echo iterator test done
+
+echo
+
+echo fixed_container test init
+    rm bin/fixed_container
+    g++ -o ./bin/fixed_container fixed_container.cpp -std=c++20 -Wall -Wextra -Wpedantic -Werror
+    ./bin/fixed_container
+echo fixed_container test done
+
+echo
