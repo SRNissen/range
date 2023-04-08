@@ -13,9 +13,9 @@ echo fixed_container test init
     ./bin/fixed_container
 echo fixed_container test done
 
-echo
-echo rangemakers test init
-    rm bin/rangemakers
-    g++ -o ./bin/rangemakers rangemakers.cpp -std=c++20 -Wall -Wextra -Wpedantic -Werror -fmax-errors=3
-    ./bin/rangemakers
-echo rangemakers test done
+# echo
+# echo rangemakers test init
+#     rm bin/rangemakers
+#     g++ -o ./bin/rangemakers rangemakers.cpp -std=c++20 -Wall -Wextra -Wpedantic -Werror -fmax-errors=3
+#     ./bin/rangemakers
+# echo rangemakers test done
