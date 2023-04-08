@@ -15,17 +15,13 @@ void test()
 {
     
 
-    using FW = snrt::RangeIterator<int, snrt::Direction::forward>;
-    using RW = snrt::RangeIterator<int, snrt::Direction::backward>;
+    using FW = snrt::RangeIterator<int>;
+    using RW = std::reverse_iterator<snrt::RangeIterator<int>>;
 
     {
         auto itrFW = FW{10};
         std::advance(itrFW, 5);
         assert(*itrFW == 15);
-
-        auto itrRW = RW{10};
-        std::advance(itrRW, 4);
-        assert(*itrRW == 6);
     }
 
     {
@@ -46,11 +42,15 @@ void test()
         r++;
         r++;
         assert(*r == *(i - 3));
+        
+        auto itrRW = RW{10}; // if 10 is the end, this points to 9 (rbegin)
+        std::advance(itrRW, 4); // so this "advances" 4 in the reverse direction
+        assert(*itrRW == 5); //to 5
     }
 
     // Operator++
     {
-        auto itr = snrt::RangeIterator<int, snrt::Direction::forward>{2};
+        auto itr = FW{2};
 
         assert(*itr == 2);
 
@@ -64,7 +64,7 @@ void test()
         assert(*b == 4);
         assert(*itr == 4);
 
-        auto itr2 = snrt::RangeIterator<int, snrt::Direction::forward>{4};
+        auto itr2 = FW{4};
         assert(itr == itr2);
 
         itr2++;
@@ -72,7 +72,7 @@ void test()
     }
 
     {
-        auto itr = snrt::RangeIterator<int, snrt::Direction::forward>{2};
+        auto itr = FW{2};
         auto a = --itr;
         assert(*a == 1);
 
@@ -82,7 +82,7 @@ void test()
     }
 
     {
-        auto itr = snrt::RangeIterator<int, snrt::Direction::forward>{2};
+        auto itr = FW{2};
         itr += 2;
         assert(*itr == 4);
         auto itr7 = itr + 3;
@@ -90,7 +90,7 @@ void test()
     }
 
     {
-        auto itr = snrt::RangeIterator<int, snrt::Direction::forward>{7};
+        auto itr = FW{7};
         itr -= 2;
         assert(*itr == 5);
         auto itr2 = itr - 3;
@@ -98,42 +98,35 @@ void test()
     }
 
     {
-        auto itr = snrt::RangeIterator<int, snrt::Direction::backward>{2};
+        auto itr = RW{2};
         auto a = --itr;
-        assert(*a == 3);
+        assert(*a == 2);
 
         auto b = itr--;
-        assert(*b == 3);
-        assert(*itr == 4);
+        assert(*b == 2);
+        assert(*itr == 3);
     }
 
     {
-        auto itr = snrt::RangeIterator<int, snrt::Direction::backward>{10};
+        auto itr = RW{10};
         itr += 2;
-        assert(*itr == 8);
-        auto itr5 = itr + 3;
-        assert(*itr5 == 5);
+        assert(*itr == 7);
+        auto itr4 = itr + 3;
+        assert(*itr4 == 4);
     }
 
     {
-        auto itr = snrt::RangeIterator<int, snrt::Direction::backward>{10};
+        auto itr = RW{10};
         itr -= 2;
-        assert(*itr == 12);
-        auto itr15 = itr - 3;
-        assert(*itr15 == 15);
+        assert(*itr == 11);
+        auto itr14 = itr - 3;
+        assert(*itr14 == 14);
     }
 
-    // {
-    //     auto itr = snrt::RangeIterator<int, snrt::Direction::forward>{2};
-
-    //     std::advance(itr, 2);
-
-    //     assert(*itr == 4);
-    // }
 
     {
-        auto itrA = snrt::RangeIterator<int, snrt::Direction::forward>{2};
-        auto itrB = snrt::RangeIterator<int, snrt::Direction::forward>{2};
+        auto itrA = FW{2};
+        auto itrB = FW{2};
 
         assert(itrA == itrB);
         assert(itrA <= itrB);
@@ -150,8 +143,8 @@ void test()
     }
 
     {
-        auto itr2 = snrt::RangeIterator<int, snrt::Direction::forward>{2};
-        auto itr3 = snrt::RangeIterator<int, snrt::Direction::forward>{3};
+        auto itr2 = FW{2};
+        auto itr3 = FW{3};
 
         assert(itr2 < itr3);
         assert(itr2 <= itr3);
@@ -161,7 +154,7 @@ void test()
     }
 
     {
-        auto itr2 = snrt::RangeIterator<int, snrt::Direction::forward>{2};
+        auto itr2 = FW{2};
         auto itr4 = itr2 + 2;
         assert(*itr4 == 4);
     }

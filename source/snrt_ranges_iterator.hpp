@@ -7,13 +7,7 @@
 
 namespace snrt
 {
-	enum class Direction
-	{
-		forward,
-		backward
-	};
-
-	template <std::integral T, Direction D>
+	template <std::integral T>
 	struct RangeIterator
 	{
 		using difference_type = std::ptrdiff_t;
@@ -31,115 +25,80 @@ namespace snrt
 
 		constexpr RangeIterator &operator+=(std::integral auto i)
 		{
-			if constexpr (D == Direction::forward)
-				t += i;
-			else
-				t -= i;
-
+			t += i;
 			return *this;
 		}
 
 		constexpr RangeIterator operator+(std::integral auto i) const
 		{
 			RangeIterator temp(*this);
-
 			return temp += i;
 		}
 
 		constexpr RangeIterator &operator-=(std::integral auto i)
 		{
-			if constexpr (D == Direction::forward)
-				t -= i;
-			else
-				t += i;
-
+			t -= i;
 			return *this;
 		}
 
 		constexpr RangeIterator operator-(std::integral auto i) const
 		{
-
 			RangeIterator temp(*this);
-
 			return temp -= i;
 		}
 
 		constexpr RangeIterator operator++(int)
 		{
 			RangeIterator temp = *this;
-
-			if constexpr (D == Direction::forward)
-				t += 1;
-			else
-				t -= 1;
-
+			t += 1;
 			return temp;
 		}
 
 		constexpr RangeIterator &operator++()
 		{
-			if constexpr (D == Direction::forward)
-				t += 1;
-			else
-				t -= 1;
-
+			t += 1;
 			return *this;
 		}
 
 		constexpr RangeIterator operator--(int)
 		{
 			RangeIterator temp = *this;
-
-			if constexpr (D == Direction::forward)
-				t -= 1;
-			else
-				t += 1;
-
+			t -= 1;
 			return temp;
 		}
 
 		constexpr RangeIterator &operator--()
 		{
-			if constexpr (D == Direction::forward)
-				t -= 1;
-			else
-				t += 1;
-
+			t -= 1;
 			return *this;
 		}
 
-		constexpr bool operator==(RangeIterator<T, D> other) const
+		constexpr bool operator==(RangeIterator other) const
 		{
 			return t == other.t;
 		}
 
-		constexpr bool operator!=(RangeIterator<T, D> other) const
+		constexpr bool operator!=(RangeIterator other) const
 		{
 			return t != other.t;
 		}
 
-		constexpr bool operator<(RangeIterator<T, D> other) const
+		constexpr bool operator<(RangeIterator other) const
 		{
-			if constexpr (D == Direction::forward)
-				return t < other.t;
-			else
-				return other.t < t;
+			return t < other.t;
 		}
 
-		constexpr bool operator<=(RangeIterator<T, D> other) const
+		constexpr bool operator<=(RangeIterator other) const
 		{
 			return (*this < other) || (*this == other);
 		}
 
-		constexpr bool operator>(RangeIterator<T, D> other) const
+		constexpr bool operator>(RangeIterator other) const
 		{
-			if constexpr (D == Direction::forward)
 				return t > other.t;
-			else
-				return other.t > t;
 		}
 
-		constexpr bool operator>=(RangeIterator<T, D> other) const
+		constexpr bool operator>=(RangeIterator other) const
 		{
 			return (*this > other) || (*this == other);
 		}
